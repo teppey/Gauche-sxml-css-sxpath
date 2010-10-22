@@ -168,18 +168,6 @@
   (&do ([a <- (&many p:white)])
     (return a)))
 
-(define p:integer
-  (&do ([sign <- (&optional (p:char #\-))]
-        [num  <- (&many1 (p:char #[0-9]))])
-    (if sign
-      (return (list->string (cons sign num)))
-      (return (list->string num)))))
-
-(define p:signed-integer
-  (&do ([sign <- (&or (p:char #\-) (p:char #\+))]
-        [num  <- (&many1 (p:char #[0-9]))])
-    (return (list->string (cons sign num)))))
-
 (define p:string2
   (&do ([(p:char #\")]
         [value <- (&many (p:char #[^\"])) ]
