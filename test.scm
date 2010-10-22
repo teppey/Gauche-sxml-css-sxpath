@@ -101,6 +101,16 @@
         '(*TOP*
            (form
              (textarea (@ (rows 10) (cols 20) (disabled "disabled")))))))
+(test* "input[type='checkbox']:checked"
+       '((input (@ (type "checkbox") (name "foo") (checked "checked")))
+         (input (@ (type "checkbox") (name "foo") (checked "true"))))
+       ((css-sxpath "input[type='checkbox']:checked")
+        '(*TOP*
+           (form
+             (input (@ (type "checkbox") (name "foo") (checked "checked")))
+             (input (@ (type "checkbox") (name "foo")))
+             (input (@ (type "checkbox") (name "foo") (checked "true")))))))
+
 
 
 

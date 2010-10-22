@@ -336,7 +336,13 @@
                                (equal? value "false")))))
                      ((sxml:filter pred) node)))]
           [(equal? name "checked")
-           ]
+           (return (lambda (node root vars)
+                     (define (pred node)
+                       (and-let* ((attrs (sxml:attr-list-u node))
+                                  (pair (assq 'checked attrs))
+                                  (value (cadr pair)))
+                         (member value '("true" "checked"))))
+                     ((sxml:filter pred) node)))]
           [else
             ;functional-pseudo
             (return name)])))
