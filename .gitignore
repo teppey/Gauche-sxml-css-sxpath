@@ -1,2 +1,5 @@
 .hg
 MEMO
+VERSION
+configure
+Makefile
