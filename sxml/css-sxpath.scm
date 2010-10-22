@@ -456,7 +456,7 @@
 
 (define p:selector
   (&or
-    ; "* tag ..."
+    ; "* E ..."
     (&do ([p:space]
           [p:universal]
           [(&many1 p:white)]
@@ -464,7 +464,7 @@
       (return (cons (lambda (node root vars)
                       ((sxml:descendant (ntype?? '*)) node))
                     a)))
-    ; "tag ..."
+    ; "E ..."
     (&do ([p:space]
           [a <- p:simple-selector-seqence]
           [b <- (&many
