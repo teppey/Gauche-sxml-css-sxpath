@@ -531,5 +531,5 @@
 
 
 
-(provide "sxml.css-sxpath")
+(provide "sxml/css-sxpath")
 ;;; vim:set lispwords+=&do:
