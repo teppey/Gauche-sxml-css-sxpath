@@ -1,5 +1,5 @@
 ;;;
-;;;  css-sxpath - CSS3 Selector to sxpath converter
+;;;  css-sxpath - CSS3 Selector to sxpath Converter
 ;;;
 
 (define-module sxml.css-sxpath
