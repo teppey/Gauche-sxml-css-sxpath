@@ -325,7 +325,16 @@
                                (equal? value "false")))))
                      ((sxml:filter pred) node)))]
           [(equal? name "disabled")
-           ]
+           (return (lambda (node root vars)
+                     (define (pred node)
+                       (and-let* ((attrs (sxml:attr-list-u node)))
+                         (or (and-let* ((pair (assq 'disabled attrs))
+                                        (value (cadr pair)))
+                               (member value '("true" "disabled")))
+                             (and-let* ((pair (assq 'enabled attrs))
+                                        (value (cadr pair)))
+                               (equal? value "false")))))
+                     ((sxml:filter pred) node)))]
           [(equal? name "checked")
            ]
           [else

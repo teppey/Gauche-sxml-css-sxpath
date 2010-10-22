@@ -95,6 +95,12 @@
        '((input (@ (type "text") (enabled "true"))))
        ((css-sxpath "input:enabled")
         '(*TOP* (form (input (@ (type "text") (enabled "true")))))))
+(test* "textarea[rows='10']:disabled"
+       '((textarea (@ (rows 10) (cols 20) (disabled "disabled"))))
+       ((css-sxpath "textarea:disabled")
+        '(*TOP*
+           (form
+             (textarea (@ (rows 10) (cols 20) (disabled "disabled")))))))
 
 
 
