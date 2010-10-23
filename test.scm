@@ -158,6 +158,9 @@
 (test-selector '("body" (div ("li h3")))
                '((h3 (@ (class "red blue green")) "color")))
 (test-selector '("div ul li.foo" *text*) '("b"))
+(test-selector '("body" "div/ul/li[@class='foo']")
+               '((li (@ (class "foo")) "b")))
+
 
 (test* "p.x a" '((a "bar"))
        ((css-sxpath "p.x a")

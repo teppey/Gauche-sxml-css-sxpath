@@ -497,7 +497,11 @@
         ((pair? selector)
          (apply node-join
                 (map (lambda (elt)
-                       (cond ((or (string? elt) (pair? elt))
+                       (cond ((string? elt)
+                              (guard
+                                (exc (else (sxpath elt))) ;xpath?
+                                (css-sxpath elt)))
+                             ((pair? elt)
                               (css-sxpath elt))
                              ((symbol? elt)
                               (sxpath (list elt)))
