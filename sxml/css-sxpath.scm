@@ -508,7 +508,7 @@
                              ((procedure? elt)
                               (sxpath (list elt)))
                              (else
-                               (error "bad path step" elt))))
+                               (error "unrecognize path step" elt))))
                      selector)))
         (else
           (error "argument must be string or list"))))
