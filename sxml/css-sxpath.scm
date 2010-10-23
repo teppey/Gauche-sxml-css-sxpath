@@ -489,7 +489,7 @@
       (apply node-or (map (lambda (path)
                             (sxpath (flatten path)))
                           (result-value r)))
-      (error "parse error" selector))))
+      (error "parse error: unrecognize CSS selector" selector))))
 
 (define (css-sxpath selector)
   (cond ((string? selector)
