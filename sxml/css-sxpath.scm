@@ -16,14 +16,12 @@
 ;;----------------------------------------------------------
 ;; Utility functions
 ;;
-
-(define (flatten lst)
-  (cond ((null? lst) '())
-        ((not (pair? (car lst)))
-         (cons (car lst) (flatten (cdr lst))))
-        (else
-          (append (flatten (car lst))
-                  (flatten (cdr lst))))))
+(define (flatten x)
+  (define (rec x acc)
+    (cond ((null? x) acc)
+          ((not (pair? x)) (cons x acc))
+          (else (rec (car x) (rec (cdr x) acc)))))
+  (rec x '()))
 
 (define (string-value s)
   (let1 s (string-trim-both s)
