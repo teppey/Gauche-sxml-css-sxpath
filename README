@@ -4,10 +4,32 @@ Module API:
 
 [Module] sxml.css-sxpath
 
-[Function] css-sxpath selector
+このモジュールはCSSセレクタをsxml.sxpathのコンバータに変換する関数を提供します。
+
+[Function] css-sxpath selector . ns-binding
+
+Selectorはリストまたは文字列です。 文字列の場合それはCSSセレクタかXPathで、
+SXPathのコンバータに変換されます。 リストの場合、それぞれの要素が以下のルー
+ルによってコンバータに変換され、node-orによって1つのコンバータにまとめられま
+す。
+
+  (or (symbol? elt) (procedure? elt)) => (sxpath elt)
+  (or (string? elt) (pair? elt))      => (css-sxpath elt)
+
+
+sxml.sxpathモジュールと同様に、いくつかのラッパ関数があります。
 
 [Function] if-css-sxpath selector
 
+css-sxpathはノードが見つからなかった場合に空リストを返しますが、
+if-css-sxpath は代わりに#fを返します。
+
+
 [Function] if-car-css-sxpath selector
 
+もし存在すれば、最初に見つかったノードを返します。そうでなければ#fを返します。
+
 [Function] car-css-sxpath selector
+
+もし存在すれば、最初に見つかったノードを返します。そうでなければ空リストを返
+します。
