@@ -13,7 +13,7 @@ Install:
 
     From source
 
-        $ git clone git://github.com/teppey/Gauche-sxml-css-sxpath-0.1.tgz
+        $ git clone git://github.com/teppey/Gauche-sxml-css-sxpath.git
         $ cd Gauche-sxml-css-sxpath
         $ ./DIST gen
         $ ./configure
