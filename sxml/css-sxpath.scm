@@ -339,54 +339,16 @@
              (return (lambda (node root vars)
                        ((node-pos (x->integer farg)) node)))]
             [(equal? fname "not")
-             (cond
-               [(#/^\[\s*([^~\|=\s]+)\s*([~\|]?=)(.+)\]$/ farg)
-                => (lambda (m)
-                     (cond
-                       ((equal? (m 2) "~=")
-                        [return
-                          (lambda (node root vars)
-                            ((sxml:filter
-                               (lambda (node)
-                                 (not
-                                   (and-let* ((name (string->symbol (m 1)))
-                                              (value (sxml:attr-u node name)))
-                                     (member (string-value (m 3))
-                                             (string-split value #/\s+/))))))
-                             node))])
-                       [(equal? (m 2) "|=")
-                        (return
-                          (lambda (node root vars)
-                            ((sxml:filter
-                               (lambda (node)
-                                 (not
-                                   (and-let* ((name (string->symbol (m 1)))
-                                              (value (sxml:attr-u node name)))
-                                     (or (equal? value (string-value (m 3)))
-                                         (string-prefix? #`",(string-value (m 3))-" value))))))
-                             node)))]
-                       [else
-                         (return
-                           (lambda (node root vars)
-                             ((sxml:filter
-                                (lambda (node)
-                                  (not
-                                    (and-let* ((name (string->symbol (m 1)))
-                                               (value (sxml:attr-u node name)))
-                                      (equal? value (string-value (m 3)))))))
-                              node)))]))]
-               [(#/^\[(.+?)\]$/ farg)
-                => (lambda (m)
-                     (return
-                       (lambda (node root vars)
-                         ((sxml:filter
-                            (lambda (node)
-                              (not
-                                (sxml:attr-u node (string->symbol (m 1))))))
-                          node))))]
-               [else
-                 ; unsupported negation arg
-                 (return fail)])]
+             (return
+               (lambda (node root vars)
+                 (let* ((path (result-value
+                                (parse p:simple-selector-seqence farg)))
+                        (converter (sxpath (flatten (list path))))
+                        (elts (converter node)))
+                   ((sxml:filter
+                      (lambda (node)
+                        (not (member node elts))))
+                    node))))]
             [else
               ; unsupported function
               (return fail)]))))
