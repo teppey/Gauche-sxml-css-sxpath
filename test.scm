@@ -165,17 +165,25 @@
 
 
 (test-section "Mixed path")
-(test-selector '("h2") '((h2 (@ (class "en-x")) "palo")))
-(test-selector '(// body div "h2") '((h2 (@ (class "en-x")) "palo")))
+(test-selector '("h2")
+               '((h2 (@ (class "en-x")) "palo")))
+(test-selector '(// body div "h2")
+               '((h2 (@ (class "en-x")) "palo")))
 (test-selector `(// div ,(lambda (node root vars)
                            ((select-kids (ntype?? 'ul)) node)) "li.foo")
                '((li (@ (class "foo")) "b")))
 (test-selector '("body" (div ("li h3")))
                '((h3 (@ (class "red blue green")) "color")))
-(test-selector '("div ul li.foo" *text*) '("b"))
+(test-selector '("div ul li.foo" *text*)
+               '("b"))
 (test-selector '("body" "div/ul/li[@class='foo']")
                '((li (@ (class "foo")) "b")))
-
+(test-selector "//title"
+               '((title (@ (class "title")) "html")))
+(test-selector "//*/div/ul/li[@id='bar']"
+               '((li (@ (id "bar")) "c")))
+(test-selector '("//div" "ul li:nth-child(1)" "./h3[@class='red blue green']")
+               '((h3 (@ (class "red blue green")) "color")))
 
 (test* "p.x a" '((a "bar"))
        ((css-sxpath "p.x a")
