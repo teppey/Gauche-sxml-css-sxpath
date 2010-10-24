@@ -185,6 +185,21 @@
 (test-selector '("//div" "ul li:nth-child(1)" "./h3[@class='red blue green']")
                '((h3 (@ (class "red blue green")) "color")))
 
+(test-section "Wrapper")
+(test* "if-css-sxpath" '((h1 (@ (id "header")) "lorem ipsum"))
+       ((if-css-sxpath "h1#header") html))
+(test* "if-css-sxpath" #f
+       ((if-css-sxpath "script") html))
+(test* "if-car-css-sxpath" '(li (@ (class "foo")) "b")
+       ((if-car-css-sxpath "li.foo") html))
+(test* "if-car-css-sxpath" #f
+       ((if-car-css-sxpath "li.qux") html))
+(test* "car-css-sxpath" '(p (@ (class "hocus") (color "pocus")) "content")
+       ((car-css-sxpath "p") html))
+(test* "car-css-sxpath" '()
+       ((car-css-sxpath "p.foo") html))
+
+(test-section "Misc")
 (test* "p.x a" '((a "bar"))
        ((css-sxpath "p.x a")
         '(*TOP* (html (body (a "foo") (p (@ (class "x")) (a "bar")))))))
