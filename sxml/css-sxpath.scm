@@ -491,27 +491,23 @@
                           (result-value r)))
       (error "parse error: unrecognize CSS selector" selector))))
 
-(define (css-sxpath selector)
-  (cond ((string? selector)
-         (compile-selector selector))
-        ((pair? selector)
-         (apply node-join
-                (map (lambda (elt)
-                       (cond ((string? elt)
-                              (guard
-                                (exc (else (sxpath elt))) ;xpath?
-                                (css-sxpath elt)))
-                             ((pair? elt)
-                              (css-sxpath elt))
-                             ((symbol? elt)
-                              (sxpath (list elt)))
-                             ((procedure? elt)
-                              (sxpath (list elt)))
-                             (else
-                               (error "unrecognize path step" elt))))
-                     selector)))
-        (else
-          (error "argument must be string or list"))))
+(define (css-sxpath selector . ns-binding)
+  (let1 ns-binding (get-optional ns-binding '())
+    (cond ((string? selector)
+           (guard (_ (else (sxpath selector ns-binding))) ;xpath?
+             (compile-selector selector)))
+          ((pair? selector)
+           (apply node-join
+                  (map (lambda (elt)
+                         (cond ((or (string? elt) (pair? elt))
+                                (css-sxpath elt ns-binding))
+                               ((or (symbol? elt) (procedure? elt))
+                                (sxpath (list elt) ns-binding))
+                               (else
+                                 (error "unrecognize path step" elt))))
+                       selector)))
+          (else
+            (error "argument must be string or list")))))
 
 (define (if-css-sxpath selector)
   (lambda (sxml)
