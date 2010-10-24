@@ -21,94 +21,97 @@ Install:
         $ make -s check
         $ [sudo] make install
 
+
 Module API:
 
 [Module] sxml.css-sxpath
 
-    このモジュールはCSSセレクタをSXPathのコンバータに変換する関数を提供しま
-    す。以下のCSSセレクタをサポートしています。
+    This module offers the function that converts the CSS selector into the
+    converter of SXPath. The following CSS selectors are supported.
 
         E, F, ...
-            複数のセレクタのいずれかにマッチする要素
+            Element that matches to either of two or more selectors
 
         E
-            指定された名前を持つ要素
+            The element with the specified name
 
         *
-            すべての要素
+            All elements
 
-        [att]
-            att属性を持つ要素
+        E[att]
+            An E Element with a "att" attribute
 
-        [att='val']
-            att属性の値がvalである要素
+        E[att='val']
+            An E Element whose "att" attribute value is exactly equal to "val"
 
-        [att~='val']
-            att属性の値は空白で区切られたリストで、valが含まれている要素
+        E[att~='val']
+            An E element whose "att" attribute value is a list of
+            whitespace-separated values, one of which is exactly equal to
+            "val"
 
-        [att|='val']
-            att属性の値がvalまたはval-で始まる要素
+        E[att|='val']
+            An E element whose "att" attribute has a hyphen-separated list
+            of values beginning (from the left) with "val"
 
-        [att^='val']
-            att属性の値がvalで始まる要素を選択
+        E[att^='val']
+            An E element whose "att" attribute value begins exactly with the
+            string "val"
 
-        [att$='val']
-            att属性の値がvalで終わる要素
+        E[att$='val']
+            An E element whose "att" attribute value ends exactly with the
+            string "val"
 
-        [att*='val']
-            att属性の値がvalを含む要素
+        E[att*='val']
+            An E element whose "att" attribute" value contains the substring
+            "val"
 
-        [att1][att2]...
-            複数の属性セレクタにマッチする要素
+        E[att1][att2]...
+            An element that matches to two or more attribute selectors
 
-        .foo
-            class属性にfooを含む要素
+        E.foo
+            An E element whose class is "foo"
 
-        #foo
-            id属性がfooである要素
+        E#foo
+            An E element with ID equal to "foo"
 
-        :first-child, :last-child, :nth-child(n)
-            それぞれ最初の子要素、最後の子要素、n番目の子要素を選択
+        E:first-child, E:last-child, E:nth-child(n)
+            An E element that first child of its parent, last child of its
+            parent, the n-th child of its parent
 
-        :enabled
-            enabled属性がtrueかenabled、またはdisabled属性がfalseである要素
-            を選択
+        E:enabled, :disabled
+            A user interface element E which is enabled or disabled
 
-        :disabled
-            disabled属性がtrueかdisabled、またはenabled属性がtrueである要素
-            を選択
+        E:checked
+            A user interface element E which is checked
 
-        :checked
-            checked属性がtrueかcheckedである要素
+        E:not([att])
+            An E element without "att" attribute
 
-        :not([att])
-            att属性を持たない要素
+        E:not([att='val'])
+            An E elemnt value is not "val"
 
-        :not([att='val'])
-            att属性の値がvalでない要素
+        E:not([att~='val'])
+             The value of the "att" attribute is an E element that "val" is
+             not included there in the list delimited by the blank
 
-        :not([att~='val'])
-            att属性の値は空白で区切られたリストで、そこにvalが含まれていない
-            要素
-
-        :not([att|='val'])
-            att属性がvalまたはval-で始まる値でない要素
+        E:not([att|='val'])
+            An E element that is not value that "att" attribute starts by
+            "val" or "val-"
 
         E F
-            Eの子孫要素であるFを選択
+            An F element descendant of an E element
 
         E > F
-            Eの子要素であるFを選択
+            An F element child of an E element
 
         E + F
-            Eと同じ親要素を持つ要素のうち、Eの直後のFを選択
+            An F element immediately preceded by an E element
 
         E ~ F
-            Eと同じ親要素を持つ要素のうち、Eより後に出現する要素を選択
+            An F element preceded by an E element
 
-
-    名前空間接頭辞などで要素名にコロンを含む場合は、コロンをバックスラッシュ
-    でエスケープしてください。
+    Please escape ":" in the backslash when you contain the colon in the
+    element name with name space prefix.
 
         ((css-sxpath "rss\\:title") '(*TOP* (rss:title "foo")))
         => '((rss:title "foo"))
@@ -116,31 +119,30 @@ Module API:
 
 [Function] css-sxpath selector . ns-binding
 
-    Selectorはリストまたは文字列です。 文字列の場合それはCSSセレクタかXPath
-    で、SXPathのコンバータに変換されます。 リストの場合、それぞれの要素が以
-    下のルールによってコンバータに変換され、node-orによって1つのコンバータに
-    まとめられます。
+    Selector is a list or string. It is converted into the converter of
+    SXPath for string with the CSS selector or XPath. Each element is
+    converted into the converter at the list by the following rules, and it
+    is brought together in one converter by node-or.
 
       (or (symbol? elt) (procedure? elt)) => (sxpath elt)
       (or (string? elt) (pair? elt)) => (css-sxpath elt)
 
 
-sxml.sxpathモジュールと同様に、いくつかのラッパ関数があります。
+There are some wrapper functions as well as the sxml.sxpath module.
 
 [Function] if-css-sxpath selector
 
-    css-sxpathはノードが見つからなかった場合に空リストを返しますが、
-    if-css-sxpath は代わりに#fを返します。
+    Instead, if-css-sxpath returns #f though css-sxpath returns the empty
+    list when the node is not found. 
+
 
 [Function] if-car-css-sxpath selector
 
-    もし存在すれば、最初に見つかったノードを返します。そうでなければ#fを返し
-    ます。
+    Returns first node found, if any. Otherwise return #f.
 
 [Function] car-css-sxpath selector
 
-    もし存在すれば、最初に見つかったノードを返します。そうでなければ空リスト
-    を返します。
+    Returns first node found, if any. Otherwise returns empty list.
 
 
 References:
