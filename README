@@ -1,35 +1,122 @@
-This is sxml.css-sxpath, convert CSS3 Selector to SXPath Converter.
+This is sxml.css-sxpath, convert CSS Selector to SXPath Converter.
 
 Module API:
 
 [Module] sxml.css-sxpath
 
-このモジュールはCSSセレクタをsxml.sxpathのコンバータに変換する関数を提供します。
+    このモジュールはCSSセレクタをSXPathのコンバータに変換する関数を提供しま
+    す。以下のCSSセレクタをサポートしています。
+
+        E, F, ...
+            複数のセレクタのいずれかにマッチする要素
+
+        E
+            指定された名前を持つ要素
+
+        *
+            すべての要素
+
+        [att]
+            att属性を持つ要素
+
+        [att='val']
+            att属性の値がvalである要素
+
+        [att~='val']
+            att属性の値は空白で区切られたリストで、valが含まれている要素
+
+        [att|='val']
+            att属性の値がvalまたはval-で始まる要素
+
+        [att^='val']
+            att属性の値がvalで始まる要素を選択
+
+        [att$='val']
+            att属性の値がvalで終わる要素
+
+        [att*='val']
+            att属性の値がvalを含む要素
+
+        [att1][att2]...
+            複数の属性セレクタにマッチする要素
+
+        .foo
+            class属性にfooを含む要素
+
+        #foo
+            id属性がfooである要素
+
+        :first-child, :last-child, :nth-child(n)
+            それぞれ最初の子要素、最後の子要素、n番目の子要素を選択
+
+        :enabled
+            enabled属性がtrueかenabled、またはdisabled属性がfalseである要素
+            を選択
+
+        :disabled
+            disabled属性がtrueかdisabled、またはenabled属性がtrueである要素
+            を選択
+
+        :checked
+            checked属性がtrueかcheckedである要素
+
+        :not([att])
+            att属性を持たない要素
+
+        :not([att='val'])
+            att属性の値がvalでない要素
+
+        :not([att~='val'])
+            att属性の値は空白で区切られたリストで、そこにvalが含まれていない
+            要素
+
+        :not([att|='val'])
+            att属性がvalまたはval-で始まる値でない要素
+
+        E F
+            Eの子孫要素であるFを選択
+
+        E > F
+            Eの子要素であるFを選択
+
+        E + F
+            Eと同じ親要素を持つ要素のうち、Eの直後のFを選択
+
+        E ~ F
+            Eと同じ親要素を持つ要素のうち、Eより後に出現する要素を選択
+
+
+    名前空間接頭辞などで要素名にコロンを含む場合は、コロンをバックスラッシュ
+    でエスケープしてください。
+
+        ((css-sxpath "rss\\:title") '(*TOP* (rss:title "foo")))
+        => '((rss:title "foo"))
+
 
 [Function] css-sxpath selector . ns-binding
 
-Selectorはリストまたは文字列です。 文字列の場合それはCSSセレクタかXPathで、
-SXPathのコンバータに変換されます。 リストの場合、それぞれの要素が以下のルー
-ルによってコンバータに変換され、node-orによって1つのコンバータにまとめられま
-す。
+    Selectorはリストまたは文字列です。 文字列の場合それはCSSセレクタかXPath
+    で、SXPathのコンバータに変換されます。 リストの場合、それぞれの要素が以
+    下のルールによってコンバータに変換され、node-orによって1つのコンバータに
+    まとめられます。
 
-  (or (symbol? elt) (procedure? elt)) => (sxpath elt)
-  (or (string? elt) (pair? elt))      => (css-sxpath elt)
+      (or (symbol? elt) (procedure? elt)) => (sxpath elt)
+      (or (string? elt) (pair? elt)) => (css-sxpath elt)
 
 
 sxml.sxpathモジュールと同様に、いくつかのラッパ関数があります。
 
 [Function] if-css-sxpath selector
 
-css-sxpathはノードが見つからなかった場合に空リストを返しますが、
-if-css-sxpath は代わりに#fを返します。
-
+    css-sxpathはノードが見つからなかった場合に空リストを返しますが、
+    if-css-sxpath は代わりに#fを返します。
 
 [Function] if-car-css-sxpath selector
 
-もし存在すれば、最初に見つかったノードを返します。そうでなければ#fを返します。
+    もし存在すれば、最初に見つかったノードを返します。そうでなければ#fを返し
+    ます。
 
 [Function] car-css-sxpath selector
 
-もし存在すれば、最初に見つかったノードを返します。そうでなければ空リストを返
-します。
+    もし存在すれば、最初に見つかったノードを返します。そうでなければ空リスト
+    を返します。
