@@ -1,5 +1,26 @@
 This is sxml.css-sxpath, convert CSS Selector to SXPath Converter.
 
+
+Requirements:
+
+    Gauche 0.9 or later
+
+Install:
+
+    From tarball
+
+        $ gauche-package install [-S root] Gauche-sxml-css-sxpath-0.1.tgz
+
+    From source
+
+        $ git clone git://github.com/teppey/Gauche-sxml-css-sxpath-0.1.tgz
+        $ cd Gauche-sxml-css-sxpath
+        $ ./DIST gen
+        $ ./configure
+        $ make
+        $ make -s check
+        $ [sudo] make install
+
 Module API:
 
 [Module] sxml.css-sxpath
@@ -120,3 +141,12 @@ sxml.sxpathモジュールと同様に、いくつかのラッパ関数があり
 
     もし存在すれば、最初に見つかったノードを返します。そうでなければ空リスト
     を返します。
+
+
+References:
+
+    CSS3 Selectors
+    http://www.w3.org/TR/2009/PR-css3-selectors-20091215
+
+    SXPath
+    http://okmij.org/ftp/Scheme/xml.html#SXPath
