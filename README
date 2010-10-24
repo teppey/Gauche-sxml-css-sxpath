@@ -111,7 +111,7 @@ Module API:
             An F element preceded by an E element
 
     Please escape ":" in the backslash when you contain the colon in the
-    element name with name space prefix.
+    element name with namespace prefix.
 
         ((css-sxpath "rss\\:title") '(*TOP* (rss:title "foo")))
         => '((rss:title "foo"))
