@@ -78,7 +78,7 @@ Module API:
             An E element that first child of its parent, last child of its
             parent, the n-th child of its parent
 
-        E:enabled, :disabled
+        E:enabled, E:disabled
             A user interface element E which is enabled or disabled
 
         E:checked
