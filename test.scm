@@ -24,6 +24,21 @@
                 (li (@ (id "bar")) "c"))
               (pre (@ (lang "fr-be"))))))))
 
+;copy from http://www.modis.ispras.ru/Lizorkin/sxml-tutorial.html
+(define sxml
+  '(*TOP*
+     (@ (*NAMESPACES* (xsd "http://www.w3.org/2001/XMLSchema")))
+     (xsd:schema
+       (xsd:complexType
+         (@ (name "Address"))
+         (xsd:sequence
+           (xsd:element (@ (type "xsd:string") (name "name")))
+           (xsd:element (@ (type "xsd:string") (name "street")))
+           (xsd:element (@ (type "xsd:string") (name "city"))))
+         (xsd:attribute
+           (@ (type "xsd:NMTOKEN") (name "country") (fixed "US")))))))
+
+
 (define (test-selector selector expected)
   (test* selector expected ((css-sxpath selector) html)))
 
