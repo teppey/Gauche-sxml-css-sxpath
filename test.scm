@@ -42,6 +42,7 @@
 (define (test-selector selector expected)
   (test* selector expected ((css-sxpath selector) html)))
 
+
 (test-section "Type selector")
 (test-selector "h1" '((h1 (@ (id "header")) "lorem ipsum")))
 (test-selector "h5" '())
@@ -50,6 +51,12 @@
                           (h3 (@ (class "red blue green")) "color"))
                       (li (@ (class "foo")) "b")
                       (li (@ (id "bar")) "c")))
+(test* "element name with prefix"
+       '((xsd:element (@ (type "xsd:string") (name "city"))))
+       ((css-sxpath "xsd\\:element[name='city']") sxml))
+(test* "element name with prefix"
+       '((@ (name "Address")))
+       ((css-sxpath '("xsd\\:complexType" @)) sxml))
 
 
 (test-section "Universal selector")
