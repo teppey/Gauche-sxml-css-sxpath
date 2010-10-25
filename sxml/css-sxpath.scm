@@ -13,6 +13,7 @@
           car-css-sxpath))
 (select-module sxml.css-sxpath)
 
+
 ;;----------------------------------------------------------
 ;; Utility functions
 ;;
@@ -446,19 +447,19 @@
 
 ;; CSS Selector -> Converter
 (define (compile-selector selector)
-  (let1 r (parse p:selectors-group selector)
-    (if (and (success? r) (null? (result-rest r)))
-      (apply node-or (map (lambda (path)
-                            (sxpath (flatten path)))
-                          (result-value r)))
-      (error "parse error: unrecognize CSS selector" selector))))
+  (and-let* ([r (parse p:selectors-group selector)]
+             [ (success? r) ]
+             [ (null? (result-rest r)) ])
+      (apply node-or (map (compose sxpath flatten)
+                          (result-value r)))))
 
 (define (css-sxpath selector . ns-binding)
   (let1 ns-binding (get-optional ns-binding '())
-    (cond ((string? selector)
-           (guard (_ (else (sxpath selector ns-binding))) ;xpath?
-             (compile-selector selector)))
-          ((pair? selector)
+    (cond [(string? selector)
+           (or (compile-selector selector)
+               (guard (_ (else #f)) (sxpath selector ns-binding))
+               (error "parse error: unrecognize css selector or xpath"))]
+          [(pair? selector)
            (apply node-join
                   (map (lambda (elt)
                          (cond ((or (string? elt) (pair? elt))
@@ -467,9 +468,9 @@
                                 (sxpath (list elt) ns-binding))
                                (else
                                  (error "unrecognize path step" elt))))
-                       selector)))
-          (else
-            (error "argument must be string or list")))))
+                       selector))]
+          [else
+            (error "argument must be string or list")])))
 
 (define (if-css-sxpath selector)
   (lambda (sxml)
