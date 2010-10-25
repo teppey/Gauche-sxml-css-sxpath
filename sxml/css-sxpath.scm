@@ -1,6 +1,9 @@
 ;;;
-;;;  css-sxpath - CSS3 Selector to SXPath Converter
+;;; css-sxpath - CSS3 Selector to SXPath Converter
 ;;;
+
+;;; Selectors Level 3
+;;; http://www.w3.org/TR/2009/PR-css3-selectors-20091215/
 
 (define-module sxml.css-sxpath
   (use sxml.sxpath)
@@ -12,7 +15,6 @@
           if-car-css-sxpath
           car-css-sxpath))
 (select-module sxml.css-sxpath)
-
 
 ;;----------------------------------------------------------
 ;; Utility functions
@@ -30,7 +32,6 @@
           ((#/^\'([^\']*)\'/ s) => (cut <> 1))
           (else s))))
 
-
 ;;----------------------------------------------------------
 ;; Parse result
 ;;
@@ -40,7 +41,6 @@
 (define (success? x) (not (null? x)))
 (define (fail? x) (null? x))
 (define fail '())
-
 
 ;;----------------------------------------------------------
 ;; Primitives
@@ -438,9 +438,8 @@
                       (return a)))])
     (return (cons first rest))))
 
-
 ;;----------------------------------------------------------
-;; Execute parser
+;; Parse CSS selector
 ;;
 (define (parse parser selector)
   (parser (string->list selector)))
@@ -488,6 +487,5 @@
       (if (null? x) '() (car x)))))
 
 
-
 (provide "sxml/css-sxpath")
-;;; vim:set lispwords+=&do:
+; vim:set lispwords+=&do:
