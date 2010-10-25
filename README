@@ -5,6 +5,7 @@ Requirements:
 
     Gauche 0.9 or later
 
+
 Install:
 
     From tarball
@@ -62,7 +63,7 @@ Module API:
             string "val"
 
         E[att*='val']
-            An E element whose "att" attribute" value contains the substring
+            An E element whose "att" attribute value contains the substring
             "val"
 
         E[att1][att2]...
@@ -78,25 +79,21 @@ Module API:
             An E element that first child of its parent, last child of its
             parent, the n-th child of its parent
 
-        E:enabled, E:disabled
-            A user interface element E which is enabled or disabled
+        E:enabled
+            An E element whose "enabled" attribute value is "true" or
+            "enabled", or "disabled" attribute value is "false"
+
+        E:disabled
+            An E element whose "disabled" attribute value is "true" or
+            "disabled", or "enabled" attribute value is "false"
 
         E:checked
-            A user interface element E which is checked
+            An E element whose "checked" attribute value is "true" or
+            "checked"
 
-        E:not([att])
-            An E element without "att" attribute
-
-        E:not([att='val'])
-            An E elemnt value is not "val"
-
-        E:not([att~='val'])
-             The value of the "att" attribute is an E element that "val" is
-             not included there in the list delimited by the blank
-
-        E:not([att|='val'])
-            An E element that is not value that "att" attribute starts by
-            "val" or "val-"
+        E:not(s)
+            An E element that does not match simple selector s except :not()
+            itself.  Therefore, s may not be nested; :not(:not(...))
 
         E F
             An F element descendant of an E element

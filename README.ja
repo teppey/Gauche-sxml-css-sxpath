@@ -5,6 +5,7 @@ Requirements:
 
     Gauche 0.9 or later
 
+
 Install:
 
     From tarball
@@ -20,6 +21,7 @@ Install:
         $ make
         $ make -s check
         $ [sudo] make install
+
 
 Module API:
 
@@ -37,62 +39,51 @@ Module API:
         *
             すべての要素
 
-        [att]
-            att属性を持つ要素
+        E[att]
+            att属性を持つE要素
 
-        [att='val']
-            att属性の値がvalである要素
+        E[att='val']
+            att属性の値がvalであるE要素
 
-        [att~='val']
-            att属性の値は空白で区切られたリストで、valが含まれている要素
+        E[att~='val']
+            att属性の値は空白で区切られたリストで、valが含まれているE要素
 
-        [att|='val']
-            att属性の値がvalまたはval-で始まる要素
+        E[att|='val']
+            att属性の値がvalまたはval-で始まるE要素
 
-        [att^='val']
-            att属性の値がvalで始まる要素を選択
+        E[att^='val']
+            att属性の値がvalで始まるE要素
 
-        [att$='val']
-            att属性の値がvalで終わる要素
+        E[att$='val']
+            att属性の値がvalで終わるE要素
 
-        [att*='val']
-            att属性の値がvalを含む要素
+        E[att*='val']
+            att属性の値がvalを含むE要素
 
-        [att1][att2]...
-            複数の属性セレクタにマッチする要素
+        E[att1][att2]...
+            複数の属性セレクタにマッチするE要素
 
-        .foo
-            class属性にfooを含む要素
+        E.foo
+            class属性にfooを含むE要素
 
-        #foo
-            id属性がfooである要素
+        E#foo
+            id属性がfooであるE要素
 
-        :first-child, :last-child, :nth-child(n)
-            それぞれ最初の子要素、最後の子要素、n番目の子要素を選択
+        E:first-child, E:last-child, E:nth-child(n)
+            最初の子要素、最後の子要素、n番目の子要素
 
-        :enabled
-            enabled属性がtrueかenabled、またはdisabled属性がfalseである要素
-            を選択
+        E:enabled
+            enabled属性がtrueかenabled、またはdisabled属性がfalseであるE要素
 
-        :disabled
-            disabled属性がtrueかdisabled、またはenabled属性がtrueである要素
-            を選択
+        E:disabled
+            disabled属性がtrueかdisabled、またはenabled属性がtrueであるE要素
 
-        :checked
-            checked属性がtrueかcheckedである要素
+        E:checked
+            checked属性がtrueかcheckedであるE要素
 
-        :not([att])
-            att属性を持たない要素
-
-        :not([att='val'])
-            att属性の値がvalでない要素
-
-        :not([att~='val'])
-            att属性の値は空白で区切られたリストで、そこにvalが含まれていない
-            要素
-
-        :not([att|='val'])
-            att属性がvalまたはval-で始まる値でない要素
+        E:not(s)
+            sにマッチしないE要素。sは:not()でないセレクタです。したがって、
+            :not(:not(...))のように入れ子にすることはできません。
 
         E F
             Eの子孫要素であるFを選択
