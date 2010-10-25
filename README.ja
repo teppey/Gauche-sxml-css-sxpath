@@ -1,12 +1,12 @@
-This is sxml.css-sxpath, convert CSS Selector to SXPath Converter.
+これはCSSセレクタをSXPathのコンバータに変換するモジュールです。
 
 
-Requirements:
+動作に必要な環境:
 
-    Gauche 0.9 or later
+    Gauche 0.9 以降
 
 
-Install:
+インストール:
 
     From tarball
 
@@ -134,10 +134,11 @@ sxml.sxpathモジュールと同様に、いくつかのラッパ関数があり
     を返します。
 
 
-References:
+参考:
 
     CSS3 Selectors
     http://www.w3.org/TR/2009/PR-css3-selectors-20091215
 
     SXPath
     http://okmij.org/ftp/Scheme/xml.html#SXPath
+
