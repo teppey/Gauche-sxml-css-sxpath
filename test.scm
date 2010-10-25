@@ -113,6 +113,17 @@
 (test-selector "h1:not([id=lorem])" '((h1 (@ (id "header")) "lorem ipsum")))
 (test-selector "h3:not([class~='purple'])"
                '((h3 (@ (class "red blue green")) "color")))
+(test-selector "ul *:not(li)"
+               '((h3 (@ (class "red blue green")) "color")))
+(test-selector "body *:not([id]):not([class])"
+               '((ul
+                   (li "a"
+                       (h3 (@ (class "red blue green")) "color"))
+                   (li (@ (class "foo")) "b")
+                   (li (@ (id "bar")) "c"))
+                 (li "a"
+                     (h3 (@ (class "red blue green")) "color"))
+                 (pre (@ (lang "fr-be")))))
 (test* "input:enabled"
        '((input (@ (type "text") (enabled "true"))))
        ((css-sxpath "input:enabled")
