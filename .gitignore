@@ -1,8 +1,0 @@
-.hg
-VERSION
-configure
-Makefile
-config.log
-config.status
-test.log
-Gauche-sxml-css-sxpath.gpd
