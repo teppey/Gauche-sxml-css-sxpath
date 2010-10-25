@@ -339,16 +339,18 @@
              (return (lambda (node root vars)
                        ((node-pos (x->integer farg)) node)))]
             [(equal? fname "not")
-             (return
-               (lambda (node root vars)
-                 (let* ((path (result-value
-                                (parse p:simple-selector-seqence farg)))
-                        (converter (sxpath (flatten (list path))))
-                        (elts (converter node)))
-                   ((sxml:filter
-                      (lambda (node)
-                        (not (member node elts))))
-                    node))))]
+             (if (#/^:not/i farg)
+               (return fail) ;negation cannot be nested
+               (return
+                 (lambda (node root vars)
+                   (let* ((path (result-value
+                                  (parse p:simple-selector-seqence farg)))
+                          (converter (sxpath (flatten (list path))))
+                          (elts (converter node)))
+                     ((sxml:filter
+                        (lambda (node)
+                          (not (member node elts))))
+                      node)))))]
             [else
               ; unsupported function
               (return fail)]))))
