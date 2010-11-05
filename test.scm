@@ -144,6 +144,40 @@
              (input (@ (type "checkbox") (name "foo")))
              (input (@ (type "checkbox") (name "foo") (checked "true")))))))
 
+(test-selector "li:nth-child(2n+1)"
+               '((li "a"
+                     (h3 (@ (class "red blue green")) "color"))
+                 (li (@ (id "bar")) "c")))
+(test-selector "li:nth-child(odd)"
+               '((li "a"
+                     (h3 (@ (class "red blue green")) "color"))
+                 (li (@ (id "bar")) "c")))
+(test-selector "li:nth-child(2n)"
+               '((li (@ (class "foo")) "b")))
+(test-selector "li:nth-child(even)"
+               '((li (@ (class "foo")) "b")))
+(test-selector "li:nth-child(3n)" '((li (@ (id "bar")) "c")))
+(test-selector "li:nth-child(0n+2)" '((li (@ (class "foo")) "b")))
+(test-selector "li:nth-child(1n+0)"
+                '((li "a" (h3 (@ (class "red blue green")) "color"))
+                  (li (@ (class "foo")) "b")
+                  (li (@ (id "bar")) "c")))
+(test-selector "li:nth-child(n+0)"
+                '((li "a" (h3 (@ (class "red blue green")) "color"))
+                  (li (@ (class "foo")) "b")
+                  (li (@ (id "bar")) "c")))
+(test-selector "li:nth-child(n)"
+                '((li "a" (h3 (@ (class "red blue green")) "color"))
+                  (li (@ (class "foo")) "b")
+                  (li (@ (id "bar")) "c")))
+(test-selector "li:nth-child(0n+0)" '())
+(test-selector "li:nth-child(-n+2)"
+                '((li "a" (h3 (@ (class "red blue green")) "color"))
+                  (li (@ (class "foo")) "b")))
+(test* "li:nth-child(3n-1)"
+       '((li "bar"))
+       ((css-sxpath "li:nth-child(3n-1)")
+        '(*TOP* (ul (li "foo") (li "bar") (li "baz") (li "qux")))))
 
 
 
