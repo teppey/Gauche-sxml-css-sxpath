@@ -16,6 +16,8 @@
           car-css-sxpath))
 (select-module sxml.css-sxpath)
 
+(autoload gauche.sequence fold-with-index)
+
 ;;----------------------------------------------------------
 ;; Utility functions
 ;;
@@ -337,8 +339,35 @@
         [p:rparen])
     (let1 farg (string-trim-both (list->string farg))
       (cond [(equal? fname "nth-child")
-             (return (lambda (node root vars)
-                       ((node-pos (x->integer farg)) node)))]
+             (let1 pred (rxmatch-case farg
+                          [#/even/i ()
+                           (lambda (i) (zero? (modulo i 2)))]
+                          [#/odd/i ()
+                           (lambda (i) (= (modulo i 2) 1))]
+                          [#/^([-+])?(\d+)?n(?:\s*([-+])\s*(\d+))?$/i
+                           (#f as an bs bn)
+                           (let ((as (if (equal? "-" as) -1 1))
+                                 (an (if (not an) 1 (string->number an)))
+                                 (bn (if (not bn) 0 (string->number bn))))
+                             (when (equal? bs "-")
+                               (set! bn (- (* as an) bn)))
+                               (cond
+                                 [(zero? an)
+                                  (lambda (i) (= i bn))]
+                                 [(negative? as)
+                                  (lambda (i) (<= i bn))]
+                                 [else
+                                   (lambda (i) (= (modulo i (* as an)) bn))]))]
+                          [#/^[+]?(\d+)$/i (#f num)
+                           (let1 num (string->number num)
+                             (lambda (i) (= i num)))]
+                          [else (lambda (i) #f)])
+               (return (lambda (node root vars)
+                         (reverse
+                           (fold-with-index
+                             (lambda (idx elt seed)
+                               (if (pred (+ idx 1)) (cons elt seed) seed))
+                             '() (as-nodeset node))))))]
             [(equal? fname "not")
              (if (#/^:not/i farg)
                (return fail) ;negation cannot be nested
