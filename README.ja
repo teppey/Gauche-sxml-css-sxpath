@@ -69,8 +69,11 @@ Module API:
         E#foo
             id属性がfooであるE要素
 
-        E:first-child, E:last-child, E:nth-child(n)
-            最初の子要素、最後の子要素、n番目の子要素
+        E:first-child, E:last-child
+            最初の子要素、最後の子要素
+
+        E:nth-child(an+b)
+            a,bは0、負の整数、正の整数
 
         E:enabled
             enabled属性がtrueかenabled、またはdisabled属性がfalseであるE要素
