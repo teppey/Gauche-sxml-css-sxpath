@@ -174,6 +174,8 @@
 (test-selector "li:nth-child(-n+2)"
                 '((li "a" (h3 (@ (class "red blue green")) "color"))
                   (li (@ (class "foo")) "b")))
+(test-selector "li:nth-child(3n+3)"
+               '((li (@ (id "bar")) "c")))
 (test* "li:nth-child(3n-1)"
        '((li "bar"))
        ((css-sxpath "li:nth-child(3n-1)")

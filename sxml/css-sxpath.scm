@@ -351,13 +351,12 @@
                                  (bn (if (not bn) 0 (string->number bn))))
                              (when (equal? bs "-")
                                (set! bn (- (* as an) bn)))
-                               (cond
-                                 [(zero? an)
-                                  (lambda (i) (= i bn))]
-                                 [(negative? as)
-                                  (lambda (i) (<= i bn))]
-                                 [else
-                                   (lambda (i) (= (modulo i (* as an)) bn))]))]
+                             (cond [(zero? an)
+                                    (lambda (i) (= i bn))]
+                                   [(negative? as)
+                                    (lambda (i) (<= i bn))]
+                                   [else
+                                     (lambda (i) (= (modulo i (* as an)) bn))]))]
                           [#/^[+]?(\d+)$/i (#f num)
                            (let1 num (string->number num)
                              (lambda (i) (= i num)))]
