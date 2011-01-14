@@ -342,10 +342,8 @@
       (cond [(equal? fname "nth-child")
              (receive (as an bs bn)
                (rxmatch-case farg
-                 [#/even/i ()
-                  (values 1 2 1 0)]
-                 [#/odd/i ()
-                  (values 1 2 1 1)]
+                 [#/even/i () (values 1 2 1 0)]
+                 [#/odd/i ()  (values 1 2 1 1)]
                  [#/^([-+])?(\d+)?n(?:\s*([-+])\s*(\d+))?$/i (#f as an bs bn)
                   (let ((as (if (equal? "-" as) -1 1))
                         (an (if (not an) 1 (string->number an)))
@@ -361,20 +359,16 @@
                                [(zero? an)
                                 ((node-pos (* bs bn)) (as-nodeset node))]
                                [else
-                                 (let1 nmax (ceiling->exact (/ (length (as-nodeset node)) an))
-                                   (when (zero? (modulo (length (as-nodeset node)) an))
+                                 (let* ((node-len (length (as-nodeset node)))
+                                        (nmax (ceiling->exact (/ node-len an))))
+                                   (when (zero? (modulo node-len an))
                                      (inc! nmax))
                                    (let1 nums (sort
-                                                (filter
-                                                  positive?
-                                                  (list-tabulate
-                                                    nmax
-                                                    (lambda (n)
-                                                      (+ (* as an n) (* bs bn))))))
-                                     (list nmax nums)
-                                     (append-map
-                                       (lambda (pos) ((node-pos pos) (as-nodeset node)))
-                                       nums)))]))))]
+                                                (filter positive?
+                                                  (list-tabulate nmax
+                                                    (lambda (n) (+ (* as an n) (* bs bn))))))
+                                     (append-map (lambda (pos) ((node-pos pos) (as-nodeset node)))
+                                                 nums)))]))))]
             [(equal? fname "not")
              (if (#/^:not/i farg)
                (return fail) ;negation cannot be nested
