@@ -16,7 +16,8 @@
           car-css-sxpath))
 (select-module sxml.css-sxpath)
 
-(autoload gauche.sequence fold-with-index)
+(autoload gauche.sequence fold-with-index map-with-index)
+(autoload util.list slices)
 
 ;;----------------------------------------------------------
 ;; Utility functions
@@ -339,34 +340,41 @@
         [p:rparen])
     (let1 farg (string-trim-both (list->string farg))
       (cond [(equal? fname "nth-child")
-             (let1 pred (rxmatch-case farg
-                          [#/even/i ()
-                           (lambda (i) (zero? (modulo i 2)))]
-                          [#/odd/i ()
-                           (lambda (i) (= (modulo i 2) 1))]
-                          [#/^([-+])?(\d+)?n(?:\s*([-+])\s*(\d+))?$/i
-                           (#f as an bs bn)
-                           (let ((as (if (equal? "-" as) -1 1))
-                                 (an (if (not an) 1 (string->number an)))
-                                 (bn (if (not bn) 0 (string->number bn))))
-                             (when (equal? bs "-")
-                               (set! bn (- (* as an) bn)))
-                             (cond [(zero? an)
-                                    (lambda (i) (= i bn))]
-                                   [(negative? as)
-                                    (lambda (i) (<= i bn))]
-                                   [else
-                                     (lambda (i) (= (modulo i (* as an)) bn))]))]
-                          [#/^[+]?(\d+)$/i (#f num)
-                           (let1 num (string->number num)
-                             (lambda (i) (= i num)))]
-                          [else (lambda (i) #f)])
-               (return (lambda (node root vars)
-                         (reverse
-                           (fold-with-index
-                             (lambda (idx elt seed)
-                               (if (pred (+ idx 1)) (cons elt seed) seed))
-                             '() (as-nodeset node))))))]
+             (receive (as an bs bn)
+               (rxmatch-case farg
+                 [#/even/i ()
+                  (values 1 2 1 0)]
+                 [#/odd/i ()
+                  (values 1 2 1 1)]
+                 [#/^([-+])?(\d+)?n(?:\s*([-+])\s*(\d+))?$/i (#f as an bs bn)
+                  (let ((as (if (equal? "-" as) -1 1))
+                        (an (if (not an) 1 (string->number an)))
+                        (bs (if (equal? "-" bs) -1 1))
+                        (bn (if (not bn) 0 (string->number bn))))
+                    (values as an bs bn))]
+                  [#/^[+]?(\d+)$/i (#f bn)
+                   (values 0 0 1 (string->number bn))]
+                  [else
+                    (values 0 0 0 0)])
+               (return (lambda (node root var)
+                         (cond [(and (zero? an) (zero? bn)) '()]
+                               [(zero? an)
+                                ((node-pos (* bs bn)) (as-nodeset node))]
+                               [else
+                                 (let1 nmax (ceiling->exact (/ (length (as-nodeset node)) an))
+                                   (when (zero? (modulo (length (as-nodeset node)) an))
+                                     (inc! nmax))
+                                   (let1 nums (sort
+                                                (filter
+                                                  positive?
+                                                  (list-tabulate
+                                                    nmax
+                                                    (lambda (n)
+                                                      (+ (* as an n) (* bs bn))))))
+                                     (list nmax nums)
+                                     (append-map
+                                       (lambda (pos) ((node-pos pos) (as-nodeset node)))
+                                       nums)))]))))]
             [(equal? fname "not")
              (if (#/^:not/i farg)
                (return fail) ;negation cannot be nested

@@ -38,6 +38,22 @@
          (xsd:attribute
            (@ (type "xsd:NMTOKEN") (name "country") (fixed "US")))))))
 
+(define lists
+  '(*TOP*
+     (html
+       (head (title "lists"))
+       (body
+         (ul
+           (li "1")
+           (li "2")
+           (li "3")
+           (li "4")
+           (li "5")
+           (li "6")
+           (li "7")
+           (li "8")
+           (li "9")
+           (li "10"))))))
 
 (define (test-selector selector expected)
   (test* selector expected ((css-sxpath selector) html)))
@@ -180,6 +196,16 @@
        '((li "bar"))
        ((css-sxpath "li:nth-child(3n-1)")
         '(*TOP* (ul (li "foo") (li "bar") (li "baz") (li "qux")))))
+
+(test* "li:nth-child(-2n+4)"
+       '((li "2") (li "4"))
+       ((css-sxpath "li:nth-child(-2n+4)") lists))
+(test* "li:nth-child(-2n)"
+       '()
+       ((css-sxpath "li:nth-child(-2n)") lists))
+(test* "li:nth-child(-2n+1)"
+       '((li "1"))
+       ((css-sxpath "li:nth-child(-2n+1)") lists))
 
 
 
