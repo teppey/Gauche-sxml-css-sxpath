@@ -16,9 +16,6 @@
           car-css-sxpath))
 (select-module sxml.css-sxpath)
 
-(autoload gauche.sequence fold-with-index map-with-index)
-(autoload util.list slices)
-
 ;;----------------------------------------------------------
 ;; Utility functions
 ;;
