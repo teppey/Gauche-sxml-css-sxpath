@@ -70,10 +70,20 @@ Module API:
             id属性がfooであるE要素
 
         E:first-child, E:last-child
-            最初の子要素、最後の子要素
+            最初のE要素、最後のE要素
 
         E:nth-child(an+b)
-            a,bは0、負の整数、正の整数
+            E要素をa個のグループに分割した後、それぞれb番目の要素にマッチし
+            ます。a,bは負の整数、正の整数、0のいずれかでなければなりません。
+            また、'odd'及び'even'を引数にとることができ、'odd'は2n+1、'even'
+            は2nと同じ意味になります。要素のインデックスは1から始まります。
+
+                E:nth-child(2n+1)    奇数番目のE要素
+                E:nth-child(odd)     同じ
+                E:nth-child(2n)      偶数番目のE要素
+                E:nth-child(even)    同じ
+                E:nth-child(0n+5)    5番目のE要素(a=0の場合はb番目の要素だけにマッチ)
+                E:nth-child(5)       同じ
 
         E:enabled
             enabled属性がtrueかenabled、またはdisabled属性がfalseであるE要素

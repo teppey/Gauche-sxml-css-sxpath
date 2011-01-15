@@ -75,9 +75,23 @@ Module API:
         E#foo
             An E element with ID equal to "foo"
 
-        E:first-child, E:last-child, E:nth-child(n)
-            An E element that first child of its parent, last child of its
-            parent, the n-th child of its parent
+        E:first-child, E:last-child
+            The first E element and the last E element.
+
+        E:nth-child(an+b)
+            After E element is divided into the group of a piece, and
+            selecting the bth element of each group. The a and b values must
+            be integers (positive, negative, or zero). :nth-child() can take
+            'odd' and 'even' as arguments instead. 'odd' becomes a meaning
+            that 2n+1 and 'even' are the same as 2n. The index of the
+            element starts from 1.
+
+                E:nth-child(2n+1)    E elements of odd number
+                E:nth-child(odd)     same
+                E:nth-child(2n)      E elements of even number
+                E:nth-child(even)    same
+                E:nth-child(0n+5)    The fifth E element(if a=0, only match bth element)
+                E:nth-child(5)       same
 
         E:enabled
             An E element whose "enabled" attribute value is "true" or
