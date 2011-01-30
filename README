@@ -10,7 +10,7 @@ Install:
 
     From tarball
 
-        $ gauche-package install [-S root] Gauche-sxml-css-sxpath-0.1.tgz
+        $ gauche-package install [-S root] Gauche-sxml-css-sxpath-0.2.tgz
 
     From source
 
